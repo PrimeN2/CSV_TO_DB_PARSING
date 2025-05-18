@@ -7,6 +7,13 @@
 - [SQL код](db/output/SQL_normalization.sql)
 - [CSV фалы](csv/)
 
+## Порядок выполнения SQL запросов
+
+1. [Нормализация products](/db/output/SQL/products_normalization.sql)
+2. [Нормализация clients](/db/output/SQL/clients_normalization.sql)
+3. [Нормализация sums_check](/db/output/SQL/sums_check_normalizations.sql)
+4. [Нормализация sales](/db/output/SQL/sales_normalization.sql)
+
 ## Проблемы, которые нужно исправить при парсинге .csv файлов
 
 ### Sales.csv
@@ -60,22 +67,6 @@
 
 **Исправление:** Убедиться, что check_number всегда заполнен и уникален.
 
-#### Нарушение 2НФ:
-
-- Поля address, delivery_car, branch зависят от client_id, а не от первичного ключа таблицы sales.
-
-*Пример:* Адрес 410779, г. Саратов... повторяется для всех продаж клиента CL_01.
-
-**Исправление:** Вынести адрес и данные о доставке в таблицу clients или создать отдельную таблицу delivery_info.
-
-#### Нарушение 3НФ:
-
-- Поля purchase_amount и cost избыточны, так как могут быть вычислены через quantity и цену продукта из таблицы products.
-
-*Пример:* Если quantity = 25 и цена продукта известна, purchase_amount = quantity * price.
-
-**Исправление:** Удалить purchase_amount и cost, оставив только quantity и ссылку на актуальную цену в products.
-
 ---
 
 ### Таблица 'sums_check':
@@ -86,26 +77,9 @@
 
 **Исправление:** Убедиться, что check_number является первичным ключом и связан с обеими таблицами.
 
-#### Нарушение 2НФ:
-
-- Поля address, delivery_car, branch дублируются в таблицах sales и sums_check, что создает избыточность.
-
-**Исправление:** Удалить эти поля из sums_check, оставив только ссылку на client_id и check_number.
-
-#### Нарушение 3НФ:
-
-- Поле purchase_sum зависит от check_number, но может быть вычислено через данные из sales.
-
-**Исправление:** Удалить purchase_sum, рассчитывая итог на этапе выборки данных.
-
 ---
 
 ### Общие проблемы:
-
-- Дублирование данных:
-Поля branch, address, delivery_car повторяются в sales и sums_check.
-
-**Исправление:** Создать таблицу branches с полями branch_id, branch_name, address.
 
 - Отсутствие связей:
 Нет явных внешних ключей между таблицами. 
