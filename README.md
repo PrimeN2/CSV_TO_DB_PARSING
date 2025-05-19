@@ -37,9 +37,9 @@
 
 ### Ключевые проблемы:
 
-- Большое количество пустых полей в столбце 'check_number' в таблицах 'sales' и 'sums_check'
+- Большое количество пустых полей в столбце 'check_number' в таблицах 'sales' и 'sums_check', а также дубликаты 'check_number'. 
 
-**Исправление:** Создать уникальные 'check_number' в 'sums_check' и связываем их с 'check_number' в 'sales'
+**Исправление:** Создать уникальные 'check_number' в 'sums_check' и связываем их с 'check_number' в 'sales', удалить дубликаты и сделать этот столбец PK 'sums_check' и FK для 'sales'.
 
 - В столбце 'client_id' в таблицах 'sales' и 'sums_check' присутствуют 'client_id', которых нет в таблице 'clients', столбец 'client_id', которой служит FK для этих таблиц
 
